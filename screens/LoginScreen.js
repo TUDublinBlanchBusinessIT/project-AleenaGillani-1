@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -20,12 +20,11 @@ const LoginScreen = () => {
   return (
     <View style={styles.container}>
       {/* Logo */}
-       <Image source={require('../assets/logo.png')} style={styles.logo} />
-      <Text style={styles.title}>Log In</Text>
-
+      <Image source={require('../assets/logo.png')} style={styles.logo} />
 
       {/* Title */}
-      <Text style={styles.title}>Welcome Back!</Text>
+      <Text style={styles.title}>Log In</Text>
+      <Text style={styles.subtitle}>Welcome Back!</Text>
 
       {/* Input Fields */}
       <TextInput
@@ -48,6 +47,11 @@ const LoginScreen = () => {
       {/* Login Button */}
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Login</Text>
+      </TouchableOpacity>
+
+      {/* Link to Signup */}
+      <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+        <Text style={styles.linkText}>Don't have an account? Sign Up</Text>
       </TouchableOpacity>
     </View>
   );
@@ -74,6 +78,11 @@ const styles = StyleSheet.create({
     color: '#333',
     marginBottom: 5,
   },
+  subtitle: {
+    fontSize: 18,
+    color: '#555',
+    marginBottom: 20,
+  },
   input: {
     width: '25%',
     padding: 15,
@@ -96,7 +105,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
+  linkText: {
+    marginTop: 15,
+    color: '#007BFF',
+    fontSize: 16,
+  },
 });
 
 export default LoginScreen;
-

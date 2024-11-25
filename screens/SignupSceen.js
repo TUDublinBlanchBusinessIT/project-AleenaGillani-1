@@ -1,72 +1,81 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import React, { useState } from "react";
+import { View,Text, TextInput,TouchableOpacity,StyleSheet,Alert,} from "react-native";
+import { createUserWithEmailAndPassword } from "firebase/auth"; // For Firebase Authentication
+import { auth, firestore } from "../firebaseConfig"; // Import auth and firestore
+import { collection, addDoc } from "firebase/firestore"; // Firestore methods
 
 const SignupScreen = ({ navigation }) => {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
 
-  const handleSignup = () => {
-    if (!username || !email || !password || !confirmPassword) {
-      Alert.alert("Error", "Please fill in all fields.");
+  const handleSignup = async () => {
+    if (!email || !password || !name) {
+      Alert.alert("Error", "All fields are required.");
       return;
     }
-    if (password !== confirmPassword) {
-      Alert.alert("Error", "Passwords do not match.");
-      return;
+
+    try {
+      // Create user with Firebase Authentication
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+
+      // Save additional user data to Firestore
+      const userRef = collection(firestore, "users");
+      await addDoc(userRef, {
+        uid: user.uid,
+        name: name,
+        email: email,
+        createdAt: new Date().toISOString(),
+      });
+
+      Alert.alert("Success", "Account created successfully!");
+      navigation.replace("Home"); // Navigate to Home screen after successful signup
+    } catch (error) {
+      Alert.alert("Error", error.message);
+      console.error("Signup error:", error);
     }
-    Alert.alert("Success", "Account created successfully!");
-    navigation.navigate('Login');
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Sign Up</Text>
+      <Text style={styles.title}>Create an Account</Text>
 
       <TextInput
         style={styles.input}
-        placeholder="Username"
-        value={username}
-        onChangeText={setUsername}
-        autoCapitalize="none"
+        placeholder="Name"
+        value={name}
+        onChangeText={setName}
       />
-
       <TextInput
         style={styles.input}
         placeholder="Email"
         value={email}
         onChangeText={setEmail}
         keyboardType="email-address"
-        autoCapitalize="none"
       />
-
       <TextInput
         style={styles.input}
         placeholder="Password"
+        secureTextEntry
         value={password}
         onChangeText={setPassword}
-        secureTextEntry
-        autoCapitalize="none"
-      />
-
-      <TextInput
-        style={styles.input}
-        placeholder="Confirm Password"
-        value={confirmPassword}
-        onChangeText={setConfirmPassword}
-        secureTextEntry
-        autoCapitalize="none"
       />
 
       <TouchableOpacity style={styles.button} onPress={handleSignup}>
         <Text style={styles.buttonText}>Sign Up</Text>
       </TouchableOpacity>
 
-      {/* Link back to Login */}
-      <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-        <Text style={styles.linkText}>Already have an account? Login</Text>
-      </TouchableOpacity>
+      <Text
+        style={styles.link}
+        onPress={() => navigation.navigate("Login")} // Navigate to Login screen
+      >
+        Already have an account? Log in
+      </Text>
     </View>
   );
 };
@@ -74,43 +83,39 @@ const SignupScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#ADD8E6',
+    justifyContent: "center",
+    alignItems: "center",
     padding: 20,
+    backgroundColor: "#f0f8ff",
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333',
+    fontWeight: "bold",
     marginBottom: 20,
   },
   input: {
-    width: '25%',
-    padding: 15,
+    width: "100%",
+    padding: 10,
     borderWidth: 1,
-    borderColor: '#007BFF',
+    borderColor: "#ccc",
     borderRadius: 5,
-    marginBottom: 15,
-    backgroundColor: '#fff',
+    marginBottom: 20,
+    backgroundColor: "#fff",
   },
   button: {
-    backgroundColor: '#007BFF',
+    backgroundColor: "#007BFF",
     padding: 15,
     borderRadius: 5,
-    width: '10%',
-    alignItems: 'center',
-    marginTop: 10,
+    alignItems: "center",
+    width: "100%",
   },
   buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
+    color: "white",
+    fontWeight: "bold",
   },
-  linkText: {
-    marginTop: 15,
-    color: '#007BFF',
-    fontSize: 16,
+  link: {
+    marginTop: 20,
+    color: "#007BFF",
   },
 });
 

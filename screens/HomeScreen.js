@@ -68,21 +68,21 @@ const HomeScreen = ({ navigation }) => {
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <View style={styles.featuredCar}>
             <Image
-              source={require("../assets/logo.png")}
+              source={require("../assets/car3.png")}
               style={styles.carImage}
             />
             <Text style={styles.carName}>Car 1</Text>
           </View>
           <View style={styles.featuredCar}>
             <Image
-              source={require("../assets/logo.png")}
+              source={require("../assets/car4.png")}
               style={styles.carImage}
             />
             <Text style={styles.carName}>Car 2</Text>
           </View>
           <View style={styles.featuredCar}>
             <Image
-              source={require("../assets/logo.png")}
+              source={require("../assets/car5.png")}
               style={styles.carImage}
             />
             <Text style={styles.carName}>Car 3</Text>

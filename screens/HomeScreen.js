@@ -1,32 +1,56 @@
-import React from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-  Image,
-} from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image, Alert } from "react-native";
+import { auth } from "../firebaseConfig"; // Firebase Authentication
+import { signOut } from "firebase/auth"; // Firebase signOut method
 
 const HomeScreen = ({ navigation }) => {
+  const [user, setUser] = useState(null);
+
+  // Check if the user is logged in on component mount
+  useEffect(() => {
+    const currentUser = auth.currentUser; // Get the current user from Firebase
+    if (!currentUser) {
+      // If no user is logged in, navigate to the Login screen
+      navigation.replace("Login");
+    } else {
+      setUser(currentUser); // Set the logged-in user
+    }
+  }, [navigation]);
+
+  // Logout function
+  const handleLogout = async () => {
+    try {
+      await signOut(auth); // Log the user out from Firebase
+      Alert.alert("Success", "You have been logged out.");
+      navigation.replace("Login"); // Navigate to Login screen
+    } catch (error) {
+      Alert.alert("Error", "There was an error logging out.");
+      console.error(error);
+    }
+  };
+
   return (
     <ScrollView style={styles.container}>
       {/* Header Section */}
       <View style={styles.header}>
         <TextInput style={styles.searchBar} placeholder="Search..." />
         <Image
-          source={{ uri: "https://via.placeholder.com/100x40" }} // Placeholder logo
+          source={require("../assets/logo.png")}
           style={styles.logo}
         />
         <View style={styles.headerIcons}>
-          <TouchableOpacity>
-            <Text style={styles.icon}>🔔</Text>
+          <TouchableOpacity onPress={handleLogout}>
+            <Text style={styles.icon}>🚪</Text> {/* Logout Icon */}
           </TouchableOpacity>
           <TouchableOpacity>
             <Text style={styles.icon}>👤</Text>
           </TouchableOpacity>
         </View>
+      </View>
+
+      {/* Welcome Section */}
+      <View style={styles.welcomeSection}>
+        <Text style={styles.welcomeText}>Welcome, {user ? user.displayName || "User" : "Guest"}!</Text>
       </View>
 
       {/* Offers Section */}
@@ -44,21 +68,21 @@ const HomeScreen = ({ navigation }) => {
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <View style={styles.featuredCar}>
             <Image
-              source={{ uri: "https://via.placeholder.com/150" }} // Placeholder image
+              source={require("../assets/logo.png")}
               style={styles.carImage}
             />
             <Text style={styles.carName}>Car 1</Text>
           </View>
           <View style={styles.featuredCar}>
             <Image
-              source={{ uri: "https://via.placeholder.com/150" }} // Placeholder image
+              source={require("../assets/logo.png")}
               style={styles.carImage}
             />
             <Text style={styles.carName}>Car 2</Text>
           </View>
           <View style={styles.featuredCar}>
             <Image
-              source={{ uri: "https://via.placeholder.com/150" }} // Placeholder image
+              source={require("../assets/logo.png")}
               style={styles.carImage}
             />
             <Text style={styles.carName}>Car 3</Text>
@@ -122,6 +146,15 @@ const styles = StyleSheet.create({
   icon: {
     fontSize: 18,
     marginHorizontal: 5,
+  },
+  welcomeSection: {
+    padding: 20,
+    alignItems: "center",
+  },
+  welcomeText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#333",
   },
   offerSection: {
     backgroundColor: "#007BFF",

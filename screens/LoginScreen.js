@@ -1,19 +1,42 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
+import { signInWithEmailAndPassword } from 'firebase/auth'; // Firebase Authentication
+import { auth } from '../firebaseConfig'; // Firebase authentication instance
 
 const LoginScreen = ({ navigation }) => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  // Hardcoded credentials for proof of concept
-  const validUsername = "testuser";
-  const validPassword = "123456";
+  // Handle login with Firebase Authentication
+  const handleLogin = async () => {
+    if (!email || !password) {
+      // Show an alert if any field is empty
+      Alert.alert("Error", "Please fill in all fields.");
+      return;
+    }
 
-  const handleLogin = () => {
-    if (username === validUsername && password === validPassword) {
-      Alert.alert("Success", "You are logged in!");
-    } else {
-      Alert.alert("Error", "Invalid username or password.");
+    try {
+      // Use Firebase's signInWithEmailAndPassword to validate credentials
+      await signInWithEmailAndPassword(auth, email, password);
+      
+      // If successful, navigate to the Home screen
+      Alert.alert("Success", "You are logged in!", [
+        {
+          text: "OK",
+          onPress: () => navigation.replace("Home"), // Navigate to Home screen
+        },
+      ]);
+    } catch (error) {
+      // Handle errors (e.g., invalid credentials, network issues)
+      let errorMessage = error.message;
+
+      if (error.code === "auth/user-not-found") {
+        errorMessage = "No account found for this email.";
+      } else if (error.code === "auth/wrong-password") {
+        errorMessage = "Incorrect password.";
+      }
+
+      Alert.alert("Error", errorMessage); // Display the error message
     }
   };
 
@@ -29,12 +52,12 @@ const LoginScreen = ({ navigation }) => {
       {/* Input Fields */}
       <TextInput
         style={styles.input}
-        placeholder="Username"
-        value={username}
-        onChangeText={setUsername}
+        placeholder="Email"
+        value={email}
+        onChangeText={setEmail}
         autoCapitalize="none"
+        keyboardType="email-address"
       />
-
       <TextInput
         style={styles.input}
         placeholder="Password"
@@ -84,7 +107,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   input: {
-    width: '25%',
+    width: '80%',
     padding: 15,
     borderWidth: 1,
     borderColor: '#007BFF',
@@ -96,7 +119,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#007BFF', // Nice Blue Color for Buttons
     padding: 15,
     borderRadius: 5,
-    width: '10%',
+    width: '50%',
     alignItems: 'center',
     marginTop: 10,
   },

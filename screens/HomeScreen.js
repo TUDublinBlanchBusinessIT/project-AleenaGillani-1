@@ -94,10 +94,11 @@ const HomeScreen = ({ navigation }) => {
       <View style={styles.actions}>
         <TouchableOpacity
           style={styles.actionButton}
-          onPress={() => navigation.navigate("TestDrive")}
+          onPress={() => navigation.navigate("TestDrive")} // Ensure this navigates to TestDriveScreen
         >
-          <Text style={styles.actionButtonText}>Test Drive</Text>
+        <Text style={styles.actionButtonText}>Test Drive</Text>
         </TouchableOpacity>
+
         <TouchableOpacity
           style={styles.actionButton}
           onPress={() => navigation.navigate("Financing")}

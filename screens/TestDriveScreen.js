@@ -1,8 +1,18 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, CheckBox, Alert, Picker } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  CheckBox,
+  Alert,
+  Picker,
+} from 'react-native';
+import { firestore } from  '../firebaseConfig';
+import { addDoc, collection } from 'firebase/firestore';
 
 const TestDriveScreen = () => {
-  // State variables for input fields and selected options
   const [model, setModel] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -10,7 +20,7 @@ const TestDriveScreen = () => {
   const [contactPreference, setContactPreference] = useState('Email');
   const [agreedToTerms, setAgreedToTerms] = useState(false);
 
-  const handleBooking = () => {
+  const handleBooking = async () => {
     // Validation
     if (!model || !name || !email || !phone) {
       Alert.alert('Error', 'Please fill in all fields.');
@@ -22,17 +32,45 @@ const TestDriveScreen = () => {
       return;
     }
 
-    // Success alert
-    Alert.alert('Success', `Your test drive for the ${model} has been booked!`, [
-      { text: 'OK' },
-    ]);
+    // Data to be saved in Firestore
+    const bookingData = {
+      model,
+      name,
+      email,
+      phone,
+      contactPreference,
+      agreedToTerms,
+      timestamp: new Date(),
+    };
+
+    try {
+      // Save data to Firestore
+      const docRef = await addDoc(collection(firestore, 'test_drives'), bookingData);
+      console.log('Document written with ID: ', docRef.id);
+
+      // Success alert
+      Alert.alert('Success', `Your test drive for the ${model} has been booked!`, [
+        { text: 'OK' },
+      ]);
+
+      // Clear form fields after successful booking
+      setModel('');
+      setName('');
+      setEmail('');
+      setPhone('');
+      setContactPreference('Email');
+      setAgreedToTerms(false);
+    } catch (error) {
+      console.error('Error adding document: ', error);
+      Alert.alert('Error', 'Failed to book test drive. Please try again later.');
+    }
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Book a Test Drive</Text>
 
-      {/* Car Model Selection (Dropdown) */}
+      {/* Input Fields */}
       <TextInput
         style={styles.input}
         placeholder="Enter your Name"
@@ -68,7 +106,7 @@ const TestDriveScreen = () => {
         <Picker.Item label="Convertible" value="Convertible" />
       </Picker>
 
-      {/* Preferred Contact Method (Dropdown) */}
+      {/* Contact Preference */}
       <Text style={styles.label}>How would you like us to contact you?</Text>
       <Picker
         selectedValue={contactPreference}
@@ -81,13 +119,8 @@ const TestDriveScreen = () => {
 
       {/* Terms and Conditions Checkbox */}
       <View style={styles.checkboxContainer}>
-        <CheckBox
-          value={agreedToTerms}
-          onValueChange={setAgreedToTerms}
-        />
-        <Text style={styles.checkboxLabel}>
-          I agree to the terms and policy
-        </Text>
+        <CheckBox value={agreedToTerms} onValueChange={setAgreedToTerms} />
+        <Text style={styles.checkboxLabel}>I agree to the terms and policy</Text>
       </View>
 
       {/* Book Now Button */}

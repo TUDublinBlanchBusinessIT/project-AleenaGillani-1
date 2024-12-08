@@ -6,6 +6,8 @@ import SignupScreen from './screens/SignupSceen';
 import HomeScreen from './screens/HomeScreen'; 
 import TestDriveScreen from "./screens/TestDriveScreen";
 import CarFilterScreen from "./screens/CarFilterScreen";
+import CarDetailsScreen from "./screens/CarDetailsScreen"; // Import the new CarDetailsScreen
+
 const Stack = createStackNavigator();
 
 const App = () => {
@@ -14,14 +16,17 @@ const App = () => {
       <Stack.Navigator initialRouteName="Login">
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Signup" component={SignupScreen} />
-        <Stack.Screen name="Home" component={HomeScreen}/>
-        <Stack.Screen name="TestDrive" component={TestDriveScreen}/>
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="TestDrive" component={TestDriveScreen} />
         <Stack.Screen name="CarFilter" component={CarFilterScreen} />
+        <Stack.Screen 
+          name="CarDetails" 
+          component={CarDetailsScreen} 
+          options={{ title: 'Car Details' }} // Add a title for the CarDetails screen
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
 
 export default App;
-
-

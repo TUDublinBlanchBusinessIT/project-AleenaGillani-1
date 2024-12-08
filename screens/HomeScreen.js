@@ -34,10 +34,7 @@ const HomeScreen = ({ navigation }) => {
       {/* Header Section */}
       <View style={styles.header}>
         <TextInput style={styles.searchBar} placeholder="Search..." />
-        <Image
-          source={require("../assets/logo.png")}
-          style={styles.logo}
-        />
+        <Image source={require("../assets/logo.png")} style={styles.logo} />
         <View style={styles.headerIcons}>
           <TouchableOpacity onPress={handleLogout}>
             <Text style={styles.icon}>🚪</Text> {/* Logout Icon */}
@@ -66,27 +63,27 @@ const HomeScreen = ({ navigation }) => {
       <View style={styles.featuredCars}>
         <Text style={styles.sectionTitle}>Featured Cars</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <View style={styles.featuredCar}>
-            <Image
-              source={require("../assets/car3.png")}
-              style={styles.carImage}
-            />
+          <TouchableOpacity
+            style={styles.featuredCar}
+            onPress={() => navigation.navigate("CarDetails")}
+          >
+            <Image source={require("../assets/car3.png")} style={styles.carImage} />
             <Text style={styles.carName}>Car 1</Text>
-          </View>
-          <View style={styles.featuredCar}>
-            <Image
-              source={require("../assets/car4.png")}
-              style={styles.carImage}
-            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.featuredCar}
+            onPress={() => navigation.navigate("CarDetails")}
+          >
+            <Image source={require("../assets/car4.png")} style={styles.carImage} />
             <Text style={styles.carName}>Car 2</Text>
-          </View>
-          <View style={styles.featuredCar}>
-            <Image
-              source={require("../assets/car5.png")}
-              style={styles.carImage}
-            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.featuredCar}
+            onPress={() => navigation.navigate("CarDetails")}
+          >
+            <Image source={require("../assets/car5.png")} style={styles.carImage} />
             <Text style={styles.carName}>Car 3</Text>
-          </View>
+          </TouchableOpacity>
         </ScrollView>
       </View>
 
@@ -96,16 +93,15 @@ const HomeScreen = ({ navigation }) => {
           style={styles.actionButton}
           onPress={() => navigation.navigate("TestDrive")} // Ensure this navigates to TestDriveScreen
         >
-        <Text style={styles.actionButtonText}>Test Drive</Text>
+          <Text style={styles.actionButtonText}>Test Drive</Text>
         </TouchableOpacity>
-        
+
         <TouchableOpacity
           style={styles.actionButton}
           onPress={() => navigation.navigate("CarFilter")} // Ensure this navigates to TestDriveScreen
         >
-        <Text style={styles.actionButtonText}>Car Filter</Text>
+          <Text style={styles.actionButtonText}>Car Filter</Text>
         </TouchableOpacity>
-
       </View>
     </ScrollView>
   );

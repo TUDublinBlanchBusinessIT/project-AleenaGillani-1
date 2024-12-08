@@ -9,10 +9,10 @@ import {
   Alert,
   Picker,
 } from 'react-native';
-import { firestore } from  '../firebaseConfig';
+import { firestore } from '../firebaseConfig';
 import { addDoc, collection } from 'firebase/firestore';
 
-const TestDriveScreen = () => {
+const TestDriveScreen = ({ navigation }) => {
   const [model, setModel] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -50,7 +50,12 @@ const TestDriveScreen = () => {
 
       // Success alert
       Alert.alert('Success', `Your test drive for the ${model} has been booked!`, [
-        { text: 'OK' },
+        {
+          text: 'OK',
+          onPress: () => {
+            navigation.replace('Home'); // Navigate back to the HomeScreen
+          },
+        },
       ]);
 
       // Clear form fields after successful booking

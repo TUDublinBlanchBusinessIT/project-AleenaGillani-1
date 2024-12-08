@@ -4,7 +4,7 @@ import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'rea
 const CarDetails2Screen = ({ navigation }) => {
   return (
     <ScrollView style={styles.container}>
-      <Image source={require('../assets/car4.png')} style={styles.carImage} />
+      <Image source={require('../assets/img2.png')} style={styles.carImage} />
       <View style={styles.detailsContainer}>
         <Text style={styles.title}>Honda Civic</Text>
         <Text style={styles.description}>

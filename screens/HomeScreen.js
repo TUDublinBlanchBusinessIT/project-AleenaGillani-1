@@ -65,21 +65,21 @@ const HomeScreen = ({ navigation }) => {
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <TouchableOpacity
             style={styles.featuredCar}
-            onPress={() => navigation.navigate("CarDetails")}
+            onPress={() => navigation.navigate("CarDetails1")}
           >
             <Image source={require("../assets/car3.png")} style={styles.carImage} />
             <Text style={styles.carName}>Car 1</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.featuredCar}
-            onPress={() => navigation.navigate("CarDetails")}
+            onPress={() => navigation.navigate("CarDetails2")}
           >
             <Image source={require("../assets/car4.png")} style={styles.carImage} />
             <Text style={styles.carName}>Car 2</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.featuredCar}
-            onPress={() => navigation.navigate("CarDetails")}
+            onPress={() => navigation.navigate("CarDetails3")}
           >
             <Image source={require("../assets/car5.png")} style={styles.carImage} />
             <Text style={styles.carName}>Car 3</Text>

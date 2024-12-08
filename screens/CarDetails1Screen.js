@@ -1,49 +1,51 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 
-const CarDetails2Screen = ({ navigation }) => {
+const CarDetails1Screen = ({ navigation }) => {
   return (
     <ScrollView style={styles.container}>
-      <Image source={require('../assets/car4.png')} style={styles.carImage} />
+      <Image source={require('../assets/car3.png')} style={styles.carImage} />
       <View style={styles.detailsContainer}>
-        <Text style={styles.title}>Honda Civic</Text>
+        <Text style={styles.title}>Toyota Highlander</Text>
         <Text style={styles.description}>
-          The Honda Civic is a sporty and fuel-efficient sedan known for its reliability and innovative design. Perfect for commuters and anyone seeking a stylish ride with advanced technology.
+          The Toyota Highlander is a versatile SUV designed for families and adventurers alike.
+          Combining comfort, safety, and hybrid efficiency, it’s the perfect choice for both city
+          driving and road trips.
         </Text>
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Features:</Text>
           <Text style={styles.text}>
-            - Engine: 2.0L 4-cylinder or Turbocharged 1.5L{'\n'}
-            - Seating: 5 passengers{'\n'}
-            - Fuel Economy: 31 MPG (city), 40 MPG (highway){'\n'}
-            - Technology: 7-inch Display, HondaLink, Apple CarPlay, Android Auto
+            - Engine: Hybrid 2.5L 4-cylinder{'\n'}
+            - Seating: Up to 7 passengers{'\n'}
+            - Fuel Economy: 36 MPG (city), 35 MPG (highway){'\n'}
+            - Technology: 12.3-inch touchscreen, Apple CarPlay, Android Auto, JBL Audio
           </Text>
         </View>
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Specifications:</Text>
           <Text style={styles.text}>
-            - Horsepower: 180 HP{'\n'}
-            - Torque: 162 lb-ft{'\n'}
-            - Top Speed: 125 MPH{'\n'}
-            - Acceleration: 0-60 in 6.7 seconds
+            - Horsepower: 243 HP{'\n'}
+            - Torque: 175 lb-ft{'\n'}
+            - Top Speed: 112 MPH{'\n'}
+            - Towing Capacity: 3,500 lbs
           </Text>
         </View>
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Safety Features:</Text>
           <Text style={styles.text}>
-            - Lane Keeping Assist{'\n'}
-            - Emergency Braking{'\n'}
-            - Adaptive Cruise Control{'\n'}
-            - 6 Airbags
+            - Toyota Safety Sense 2.5{'\n'}
+            - Blind Spot Monitoring{'\n'}
+            - 8 Airbags{'\n'}
+            - Adaptive Cruise Control
           </Text>
         </View>
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Price:</Text>
           <Text style={styles.text}>
-            - Base Price: $24,000{'\n'}
-            - Taxes and Fees: $2,200{'\n'}
-            - Total: $26,200{'\n'}
-            - Discounts: $1,000 loyalty discount
+            - Base Price: $36,000{'\n'}
+            - Taxes and Fees: $3,500{'\n'}
+            - Total: $39,500{'\n'}
+            - Discounts: $2,000 off for first-time buyers
           </Text>
         </View>
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('TestDrive')}>
@@ -73,4 +75,4 @@ const styles = StyleSheet.create({
   buttonText: { color: '#fff', fontWeight: 'bold', fontSize: 16 },
 });
 
-export default CarDetails2Screen;
+export default CarDetails1Screen;

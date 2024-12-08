@@ -9,6 +9,7 @@ import CarFilterScreen from "./screens/CarFilterScreen";
 import CarDetails1Screen from "./screens/CarDetails1Screen";
 import CarDetails2Screen from "./screens/CarDetails2Screen";
 import CarDetails3Screen from "./screens/CarDetails3Screen";
+import BookingsScreen from './screens/BookingsScreen';
 
 const Stack = createStackNavigator();
 
@@ -24,6 +25,7 @@ const App = () => {
         <Stack.Screen name="CarDetails1" component={CarDetails1Screen}/>
         <Stack.Screen name="CarDetails2" component={CarDetails2Screen} />
         <Stack.Screen name="CarDetails3" component={CarDetails3Screen} />
+        <Stack.Screen name="Bookings" component={BookingsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

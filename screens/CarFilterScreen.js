@@ -1,13 +1,5 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  FlatList,
-  Picker,
-} from 'react-native';
+import {View,Text,TextInput,TouchableOpacity,StyleSheet,FlatList,Picker,} from 'react-native';
 
 const carData = [
   { id: '1', model: 'SUV', price: 30000, fuel: 'Gasoline', brand: 'Toyota' },

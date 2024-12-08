@@ -1,14 +1,5 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  CheckBox,
-  Alert,
-  Picker,
-} from 'react-native';
+import {View,Text,TextInput,TouchableOpacity,StyleSheet,CheckBox,Alert,Picker,} from 'react-native';
 import { firestore } from '../firebaseConfig';
 import { addDoc, collection } from 'firebase/firestore';
 
@@ -132,6 +123,13 @@ const TestDriveScreen = ({ navigation }) => {
       <TouchableOpacity style={styles.button} onPress={handleBooking}>
         <Text style={styles.buttonText}>Book Now</Text>
       </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate('Bookings')}
+      >
+        <Text style={styles.buttonText}>View Bookings</Text>
+      </TouchableOpacity>
+
     </View>
   );
 };

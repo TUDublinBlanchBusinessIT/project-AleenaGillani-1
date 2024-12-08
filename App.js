@@ -2,7 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from './screens/LoginScreen';
-import SignupScreen from './screens/SignupSceen'; 
+import SignupScreen from './screens/SignupScreen'; 
 import HomeScreen from './screens/HomeScreen'; 
 import TestDriveScreen from "./screens/TestDriveScreen";
 import CarFilterScreen from "./screens/CarFilterScreen";

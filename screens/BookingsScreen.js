@@ -34,6 +34,12 @@ const BookingsScreen = ({ navigation }) => {
       <Text style={styles.bookingText}>Phone: {item.phone}</Text>
       <Text style={styles.bookingText}>Car Model: {item.model}</Text>
       <Text style={styles.bookingText}>Contact Preference: {item.contactPreference}</Text>
+      <TouchableOpacity
+        style={styles.editButton}
+        onPress={() => navigation.navigate('EditBooking', { bookingId: item.id })}
+      >
+        <Text style={styles.editButtonText}>Edit Booking</Text>
+      </TouchableOpacity>
     </View>
   );
 
@@ -103,6 +109,17 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
     fontSize: 16,
+  },
+  editButton: {
+    backgroundColor: '#FFD700',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+    alignItems: 'center',
+  },
+  editButtonText: {
+    color: '#000',
+    fontWeight: 'bold',
   },
 });
 

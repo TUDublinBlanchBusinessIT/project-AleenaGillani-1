@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import {View,Text,TextInput,TouchableOpacity,StyleSheet,FlatList,Picker,} from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  FlatList,
+  Picker,
+} from 'react-native';
 
 const carData = [
   { id: '1', model: 'SUV', price: 30000, fuel: 'Gasoline', brand: 'Toyota' },
@@ -10,34 +18,41 @@ const carData = [
 ];
 
 const CarFilterScreen = () => {
-  const [selectedModel, setSelectedModel] = useState('');
-  const [maxPrice, setMaxPrice] = useState('');
-  const [fuelType, setFuelType] = useState('');
+  const [filters, setFilters] = useState({
+    selectedModel: '',
+    maxPrice: '',
+    fuelType: '',
+  });
   const [filteredCars, setFilteredCars] = useState(carData);
 
   const applyFilters = () => {
     let filtered = carData;
 
-    if (selectedModel) {
-      filtered = filtered.filter((car) => car.model === selectedModel);
+    if (filters.selectedModel) {
+      filtered = filtered.filter((car) => car.model === filters.selectedModel);
     }
 
-    if (maxPrice) {
-      filtered = filtered.filter((car) => car.price <= parseInt(maxPrice, 10));
+    if (filters.maxPrice) {
+      filtered = filtered.filter(
+        (car) => car.price <= parseInt(filters.maxPrice, 10)
+      );
     }
 
-    if (fuelType) {
-      filtered = filtered.filter((car) => car.fuel === fuelType);
+    if (filters.fuelType) {
+      filtered = filtered.filter((car) => car.fuel === filters.fuelType);
     }
 
-    setFilteredCars(filtered);
+    setFilteredCars([...filtered]); // Using spread operator to ensure proper state update
   };
 
   const clearFilters = () => {
-    setSelectedModel('');
-    setMaxPrice('');
-    setFuelType('');
-    setFilteredCars(carData);
+    setFilters({
+      ...filters, // Reset filters while maintaining state structure
+      selectedModel: '',
+      maxPrice: '',
+      fuelType: '',
+    });
+    setFilteredCars([...carData]); // Reset the filtered cars
   };
 
   const renderCarItem = ({ item }) => (
@@ -55,9 +70,11 @@ const CarFilterScreen = () => {
       {/* Model Selection */}
       <Text style={styles.label}>Select Model</Text>
       <Picker
-        selectedValue={selectedModel}
+        selectedValue={filters.selectedModel}
         style={styles.picker}
-        onValueChange={(itemValue) => setSelectedModel(itemValue)}
+        onValueChange={(itemValue) =>
+          setFilters({ ...filters, selectedModel: itemValue })
+        }
       >
         <Picker.Item label="All Models" value="" />
         <Picker.Item label="SUV" value="SUV" />
@@ -71,17 +88,19 @@ const CarFilterScreen = () => {
       <TextInput
         style={styles.input}
         placeholder="Enter max price"
-        value={maxPrice}
-        onChangeText={setMaxPrice}
+        value={filters.maxPrice}
+        onChangeText={(text) => setFilters({ ...filters, maxPrice: text })}
         keyboardType="numeric"
       />
 
       {/* Fuel Type Selection */}
       <Text style={styles.label}>Select Fuel Type</Text>
       <Picker
-        selectedValue={fuelType}
+        selectedValue={filters.fuelType}
         style={styles.picker}
-        onValueChange={(itemValue) => setFuelType(itemValue)}
+        onValueChange={(itemValue) =>
+          setFilters({ ...filters, fuelType: itemValue })
+        }
       >
         <Picker.Item label="All Fuel Types" value="" />
         <Picker.Item label="Gasoline" value="Gasoline" />

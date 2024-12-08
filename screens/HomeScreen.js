@@ -1,101 +1,51 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-  Image,
-  Alert,
-  FlatList,
-} from "react-native";
-import { auth } from "../firebaseConfig";
-import { signOut } from "firebase/auth";
-
-// Sample car data for recommendations
-const carData = [
-  { id: "1", model: "SUV", brand: "Toyota", price: 30000, image: require("../assets/car3.png") },
-  { id: "2", model: "Sedan", brand: "Honda", price: 20000, image: require("../assets/car4.png") },
-  { id: "3", model: "Coupe", brand: "Tesla", price: 35000, image: require("../assets/car5.png") },
-];
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image, Alert } from "react-native";
+import { auth } from "../firebaseConfig"; // Firebase Authentication
+import { signOut } from "firebase/auth"; // Firebase signOut method
 
 const HomeScreen = ({ navigation }) => {
   const [user, setUser] = useState(null);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filteredCars, setFilteredCars] = useState(carData);
-  const [recommendedCars, setRecommendedCars] = useState([]);
 
-  // Check if the user is logged in
+  // Check if the user is logged in on component mount
   useEffect(() => {
-    const currentUser = auth.currentUser;
+    const currentUser = auth.currentUser; // Get the current user from Firebase
     if (!currentUser) {
+      // If no user is logged in, navigate to the Login screen
       navigation.replace("Login");
     } else {
-      setUser(currentUser);
-      fetchRecommendedCars();
+      setUser(currentUser); // Set the logged-in user
     }
   }, [navigation]);
 
-  // Fetch recommended cars
-  const fetchRecommendedCars = () => {
-    const recommendations = carData.filter((car) => car.price <= 30000); // Example filter
-    setRecommendedCars(recommendations);
-  };
-
-  // Handle logout with confirmation
+  // Logout function
   const handleLogout = async () => {
-    Alert.alert("Logout", "Are you sure you want to logout?", [
-      { text: "Cancel", style: "cancel" },
-      {
-        text: "Logout",
-        onPress: async () => {
-          try {
-            await signOut(auth);
-            navigation.replace("Login");
-          } catch (error) {
-            console.error("Logout error:", error);
-          }
-        },
-      },
-    ]);
+    try {
+      await signOut(auth); // Log the user out from Firebase
+      Alert.alert("Success", "You have been logged out.");
+      navigation.replace("Login"); // Navigate to Login screen
+    } catch (error) {
+      Alert.alert("Error", "There was an error logging out.");
+      console.error(error);
+    }
   };
-
-  // Handle search functionality
-  const handleSearch = (query) => {
-    setSearchQuery(query);
-    const filtered = carData.filter((car) =>
-      car.brand.toLowerCase().includes(query.toLowerCase()) ||
-      car.model.toLowerCase().includes(query.toLowerCase())
-    );
-    setFilteredCars(filtered);
-  };
-
-  // Render a single car item
-  const renderCar = ({ item }) => (
-    <View style={styles.carItem}>
-      <Image source={item.image} style={styles.carImage} />
-      <Text style={styles.carTitle}>
-        {item.brand} {item.model}
-      </Text>
-      <Text style={styles.carDetails}>Price: ${item.price}</Text>
-    </View>
-  );
 
   return (
     <ScrollView style={styles.container}>
       {/* Header Section */}
       <View style={styles.header}>
-        <TextInput
-          style={styles.searchBar}
-          placeholder="Search cars..."
-          value={searchQuery}
-          onChangeText={handleSearch}
+        <TextInput style={styles.searchBar} placeholder="Search..." />
+        <Image
+          source={require("../assets/logo.png")}
+          style={styles.logo}
         />
-        <Image source={require("../assets/logo.png")} style={styles.logo} />
-        <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
-          <Text style={styles.logoutText}>Logout</Text>
-        </TouchableOpacity>
+        <View style={styles.headerIcons}>
+          <TouchableOpacity onPress={handleLogout}>
+            <Text style={styles.icon}>🚪</Text> {/* Logout Icon */}
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Text style={styles.icon}>👤</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       {/* Welcome Section */}
@@ -103,44 +53,59 @@ const HomeScreen = ({ navigation }) => {
         <Text style={styles.welcomeText}>Welcome, {user ? user.displayName || "User" : "Guest"}!</Text>
       </View>
 
-      {/* Recommendations Section */}
-      <View style={styles.recommendationSection}>
-        <Text style={styles.sectionTitle}>Recommended Cars</Text>
-        <FlatList
-          data={recommendedCars}
-          keyExtractor={(item) => item.id}
-          renderItem={renderCar}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.list}
-        />
+      {/* Offers Section */}
+      <View style={styles.offerSection}>
+        <Text style={styles.offerTitle}>Available Offers</Text>
+        <Text style={styles.offerDetails}>Special Discounts on SUVs</Text>
+        <TouchableOpacity style={styles.offerButton}>
+          <Text style={styles.offerButtonText}>Avail Now</Text>
+        </TouchableOpacity>
       </View>
 
       {/* Featured Cars Section */}
       <View style={styles.featuredCars}>
-        <Text style={styles.sectionTitle}>Search Results</Text>
-        <FlatList
-          data={filteredCars}
-          keyExtractor={(item) => item.id}
-          renderItem={renderCar}
-          contentContainerStyle={styles.list}
-        />
+        <Text style={styles.sectionTitle}>Featured Cars</Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          <View style={styles.featuredCar}>
+            <Image
+              source={require("../assets/car3.png")}
+              style={styles.carImage}
+            />
+            <Text style={styles.carName}>Car 1</Text>
+          </View>
+          <View style={styles.featuredCar}>
+            <Image
+              source={require("../assets/car4.png")}
+              style={styles.carImage}
+            />
+            <Text style={styles.carName}>Car 2</Text>
+          </View>
+          <View style={styles.featuredCar}>
+            <Image
+              source={require("../assets/car5.png")}
+              style={styles.carImage}
+            />
+            <Text style={styles.carName}>Car 3</Text>
+          </View>
+        </ScrollView>
       </View>
 
       {/* Action Buttons */}
       <View style={styles.actions}>
         <TouchableOpacity
           style={styles.actionButton}
-          onPress={() => navigation.navigate("TestDrive")}
+          onPress={() => navigation.navigate("TestDrive")} // Ensure this navigates to TestDriveScreen
         >
-          <Text style={styles.actionButtonText}>Test Drive</Text>
+        <Text style={styles.actionButtonText}>Test Drive</Text>
         </TouchableOpacity>
+        
         <TouchableOpacity
           style={styles.actionButton}
-          onPress={() => navigation.navigate("CarFilter")}
+          onPress={() => navigation.navigate("CarFilter")} // Ensure this navigates to TestDriveScreen
         >
-          <Text style={styles.actionButtonText}>Car Filter</Text>
+        <Text style={styles.actionButtonText}>Car Filter</Text>
         </TouchableOpacity>
+
       </View>
     </ScrollView>
   );
@@ -150,12 +115,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f0f8ff",
-    padding: 10,
   },
   header: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 20,
+    padding: 10,
+    backgroundColor: "#fff",
   },
   searchBar: {
     flex: 1,
@@ -166,17 +131,17 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   logo: {
-    width: 80,
+    width: 100,
     height: 40,
   },
-  logoutButton: {
-    backgroundColor: "#ff4d4d",
-    padding: 10,
-    borderRadius: 5,
+  headerIcons: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    width: 60,
   },
-  logoutText: {
-    color: "#fff",
-    fontWeight: "bold",
+  icon: {
+    fontSize: 18,
+    marginHorizontal: 5,
   },
   welcomeSection: {
     padding: 20,
@@ -185,53 +150,64 @@ const styles = StyleSheet.create({
   welcomeText: {
     fontSize: 20,
     fontWeight: "bold",
+    color: "#333",
   },
-  recommendationSection: {
-    marginBottom: 20,
+  offerSection: {
+    backgroundColor: "#007BFF",
+    padding: 20,
+    borderRadius: 10,
+    margin: 20,
+  },
+  offerTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#fff",
+    marginBottom: 10,
+  },
+  offerDetails: {
+    color: "#fff",
+    marginBottom: 10,
+  },
+  offerButton: {
+    backgroundColor: "#fff",
+    padding: 10,
+    borderRadius: 5,
+    alignItems: "center",
+  },
+  offerButtonText: {
+    color: "#007BFF",
+    fontWeight: "bold",
+  },
+  featuredCars: {
+    margin: 20,
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 10,
   },
-  list: {
-    paddingHorizontal: 10,
-  },
-  carItem: {
+  featuredCar: {
     marginRight: 15,
-    backgroundColor: "#fff",
-    padding: 10,
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: "#ccc",
     alignItems: "center",
-    width: 200,
   },
   carImage: {
     width: 150,
     height: 100,
-    borderRadius: 5,
+    borderRadius: 10,
   },
-  carTitle: {
-    fontSize: 16,
+  carName: {
+    marginTop: 5,
     fontWeight: "bold",
-    marginTop: 5,
-  },
-  carDetails: {
-    fontSize: 14,
-    marginTop: 5,
   },
   actions: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    marginHorizontal: 20,
   },
   actionButton: {
     backgroundColor: "#007BFF",
     padding: 15,
     borderRadius: 5,
-    flex: 1,
-    marginHorizontal: 5,
     alignItems: "center",
+    marginBottom: 15,
   },
   actionButtonText: {
     color: "#fff",

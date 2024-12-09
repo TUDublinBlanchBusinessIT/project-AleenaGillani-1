@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { Picker } from '@react-native-picker/picker';
 import LoginScreen from './screens/LoginScreen';
 import SignupScreen from './screens/SignupSceen'; 
 import HomeScreen from './screens/HomeScreen'; 

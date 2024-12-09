@@ -36,13 +36,14 @@ const HomeScreen = ({ navigation }) => {
         <TextInput style={styles.searchBar} placeholder="Search..." />
         <Image source={require("../assets/logo.png")} style={styles.logo} />
         <View style={styles.headerIcons}>
-          <TouchableOpacity onPress={handleLogout}>
-            <Text style={styles.icon}>🚪</Text> {/* Logout Icon */}
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Text style={styles.icon}>👤</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity onPress={handleLogout}>
+          <Text style={styles.icon}>🚪</Text> {/* Logout Icon */}
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Text style={styles.icon}>👤</Text> {/* Profile Icon */}
+        </TouchableOpacity>
+
+      </View>
       </View>
 
       {/* Welcome Section */}
